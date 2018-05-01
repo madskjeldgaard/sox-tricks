@@ -24,7 +24,7 @@ The following functions all work on folders of sounds.
 
 Before executing this command you need to move to the folder in question by typing `cd path/to/folder/of/sounds`
 
-Then type `normdir`.
+Then type `normdir`
 
 `normdir` normalizes all sounds in a folder to -0.1 db. 
 
