@@ -12,7 +12,7 @@ It's a prerequisite that you have sox installed
 
 ## Usage
 
-##### splitbysilence
+#### splitbysilence
 
 `splitbysilence "filename.wav"`
 
@@ -20,7 +20,7 @@ This will take the specified audio file and split it based on the silences in th
 
 The following functions all work on folders of sounds.
 
-##### normdir
+#### normdir
 
 Before executing this command you need to move to the folder in question by typing `cd path/to/folder/of/sounds`
 
@@ -30,7 +30,7 @@ Then type `normdir`.
 
 The result is to be found in the directory `converted` in the root of the directory in question.
 
-##### fadedir
+#### fadedir
 
 Before executing this command you need to move to the folder in question by typing `cd path/to/folder/of/sounds`
 
@@ -40,7 +40,7 @@ fadedir adds tiny fade ins + outs to all sounds in a folder to remove clicks.
 
 The result is to be found in the directory `converted` in the root of the directory in question.
 
-##### fadeandnormdir
+#### fadeandnormdir
 Before executing this command you need to move to the folder in question by typing `cd path/to/folder/of/sounds`
 
 Then type `fadeandnormdir`
