@@ -70,6 +70,7 @@ function fadeandnormdir(){
 
     echo "Done adding fades to sounds and normalizing them!"
 }
+
 # SPLITBYSILENCE
 # Split audio file by silence
 # Usage: splitbysilence "path/to/sound.wav"
@@ -78,5 +79,16 @@ function splitbysilence(){
     sox $1 $1 silence 1 0.1 1% 1 0.1 1% : newfile : restart
 
     echo "Done splitting sounds!"
+
+}
+
+# STEREO2MONO
+# Convert stereo audio to mono
+# Usage: stereo2mono "path/to/sound.wav"
+function stereo2mono(){
+
+    sox $1 $1.mono.wav remix 1,2
+
+    echo "Done converting sounds!"
 
 }
