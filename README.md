@@ -6,7 +6,7 @@ This repo is a collection of useful functions you can add to your system to make
 ## Installation
 It's a prerequisite that you have sox installed
 
-1. Open up your .bash_profile in a text editor (the file is usually found in your user directory, the full path in osx is ~/.bash_profile) 
+1. Open up your .bash_profile in a text editor (the file is usually found in your user directory, the full path in osx is ~/.bash_profile). If you're trying to find the file in finder and not seeing it in your user directory it's probably because it's hidden and you need to change your folder settings to make invisible files visible. 
 2. Copy and paste the contents of the .bash_profile from this repo to the bottom of your own .bash_profile. Make sure not to overwrite anything you already have in there. 
 3. Reload your .bash_profile by opening up your terminal and typing `source ~/.bash_profile`
 
