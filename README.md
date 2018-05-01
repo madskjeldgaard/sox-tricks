@@ -1,7 +1,7 @@
 # sox-tricks
-Powerful audio organization / editing bash scripts based on the SoX audio tool
+Powerful audio organization / batch editing scripts based on the [SoX audio tool](http://sox.sourceforge.net/)
 
-This repo is a collection of useful functions you can add to your system to make audio organization from the command line really easy-breezy. 
+This repo is a collection of useful functions you can add to your system to make audio organization from the command line really easy-breezy by for example allowing to type one word in the command line to automatically normalize a whole folder of sounds. 
 
 ## Installation
 It's a prerequisite that you have sox installed
@@ -12,11 +12,15 @@ It's a prerequisite that you have sox installed
 
 ## Usage
 
+### Single file operations
+
 #### splitbysilence
 
 `splitbysilence "filename.wav"`
 
 This will take the specified audio file and split it based on the silences in the file. 
+
+### Folder operations
 
 The following functions all work on folders of sounds.
 
