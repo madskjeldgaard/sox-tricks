@@ -5,7 +5,7 @@
 # Author: Mads Kjeldgaard
 # Contributor: Mauro Lizaur
 #
-# Licence ??
+# License ??
 # 2018? - 20??
 ################################################################################
 
@@ -15,7 +15,7 @@
 ################################################################################
 # VERBOSITY
 # Determines if the scripts should notify the user with a message or not.
-# Usage: add -v to any script
+# Usage: func-name -V
 verbosity() {
     getopts ":V" OPTION
     [ "$OPTION" = "V" ]
@@ -23,7 +23,7 @@ verbosity() {
 
 # SOUNDFINDER
 # Finds most common sound files in a directory
-# Usage: cd to the directory of sounds and returns a list of sound files
+# Usage: cd /path/of/sounds && soundFinder;
 soundFinder() {
     #find . -type f -regextype posix-extended -regex ".*[.](wav|mp3|aif(f)?)$"
     find . -type f -regex ".*" | grep -iE ".*[.](wav|mp3|aif(f)?)";
@@ -38,7 +38,7 @@ soundFinder() {
 
 # NORMALIZE
 # Normalizes a sound file
-# Usage: normalize "path/to/sound.wav" "path/to/normalized.wav" "amp in dB"
+# Usage: normalize [-V] "path/to/sound.wav" "path/to/normalized.wav" "amp in dB"
 normalize() {
     VERBOSITY="";
     verbosity $@ && VERBOSITY="-V" && shift;
@@ -62,7 +62,7 @@ normalize() {
 
 # FADEINOUT
 # Adds a small fade ins + outs to a sound file
-# Usage: fadeinout "path/to/sound.wav" "path/to/fadeinout.wav"
+# Usage: fadeinout [-V] "path/to/sound.wav" "path/to/fadeinout.wav"
 fadeinout() {
     VERBOSITY="";
     verbosity $@ && VERBOSITY="-V" && shift;
@@ -86,7 +86,7 @@ fadeinout() {
 
 # SPLITBYSILENCE
 # Split audio file by silence
-# Usage: splitbysilence "path/to/sound.wav"
+# Usage: splitbysilence [-V] "path/to/sound.wav"
 splitbysilence() {
     VERBOSITY="";
     verbosity $@ && VERBOSITY="-V" && shift;
@@ -108,7 +108,7 @@ splitbysilence() {
 
 # STEREO2MONO
 # Convert stereo audio to mono
-# Usage: stereo2mono "path/to/stereo.wav" "path/to/mono.wav"
+# Usage: stereo2mono [-V] "path/to/stereo.wav" "path/to/mono.wav"
 stereo2mono() {
     VERBOSITY="";
     verbosity $@ && VERBOSITY="-V" && shift;
@@ -129,7 +129,7 @@ stereo2mono() {
 
 # TRIMSILENCE
 # Trim silence from begin and end
-# Usage: trimsilence "path/to/sound.wav" "path/to/trimmed.wav"
+# Usage: trimsilence [-V] "path/to/sound.wav" "path/to/trimmed.wav"
 trimsilence() {
     VERBOSITY="";
     verbosity $@ && VERBOSITY="-V" && shift;
@@ -150,7 +150,7 @@ trimsilence() {
 
 # to4410016
 # Converts audio to 44100 hz (sample rate) and 16 bits (bit depth)
-# Usage: to4410016 "path/to/sound.wav" "path/to/sound4410016b.wav"
+# Usage: to4410016 [-V] "path/to/sound.wav" "path/to/sound4410016b.wav"
 to4410016() {
     VERBOSITY="";
     verbosity $@ && VERBOSITY="-V" && shift;
@@ -171,7 +171,7 @@ to4410016() {
 
 # VOICECLEANUP
 # Clean ups voice audios
-# Usage: voicecleanup "path/to/voice.wav" "path/to/clean.wav"
+# Usage: voicecleanup [-V] "path/to/voice.wav" "path/to/clean.wav"
 voicecleanup() {
     VERBOSITY="";
     verbosity $@ && VERBOSITY="-V" && shift;
@@ -332,21 +332,21 @@ to4410016dir() {
 # VOICECLEANUPDIR
 # applies `voicecleanupdir` in the current directory of sounds
 voicecleanupdir() {
-    sox4410016Func() {
+    soxVoiceFunc() {
         FILES=$(soundFinder);
         VERBOSITY="";
         verbosity $@ && VERBOSITY="-V" && shift;
 
         for file in $FILES;
         do
-            to4410016 $VERBOSITY \
-                      "$file" \
-                      "converted/cleanup_$(basename $file)";
+            voicecleanup $VERBOSITY \
+                         "$file" \
+                         "converted/cleanup_$(basename $file)";
         done;
     }
 
     mkdir -p converted && \
-        sox4410016Func $@ && \
+        soxVoiceFunc $@ && \
         verbosity $@ && \
         echo "Done cleaning sounds!";
 
