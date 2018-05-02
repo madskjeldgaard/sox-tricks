@@ -3,52 +3,99 @@ Powerful audio organization / batch editing scripts based on the [SoX audio tool
 
 This repo is a collection of useful functions you can add to your system to make audio organization from the command line really easy-breezy by for example allowing to type one word in the command line to automatically normalize a whole folder of sounds. 
 
+Thanks to [mauro](https://github.com/lvm) it should now be posix / linux compliant. 
+
 ## Installation
-It's a prerequisite that you have sox installed
+It's a prerequisite that you have sox installed.
 
-1. Open up your .bash_profile in a text editor (the file is usually found in your user directory, the full path in osx is ~/.bash_profile). If you're trying to find the file in finder and not seeing it in your user directory it's probably because it's hidden and you need to change your folder settings to make invisible files visible. 
-2. Copy and paste the contents of the .bash_profile from this repo to the bottom of your own .bash_profile. Make sure not to overwrite anything you already have in there. 
-3. Reload your .bash_profile by opening up your terminal and typing `source ~/.bash_profile`
+1. Open up a terminal and execute the following command to move to your home directory and download the file of sox-tricks from this repo: `cd ~/ && wget https://raw.githubusercontent.com/datamads/sox-tricks/master/.sox_tricks`
 
-## Usage
+2. Open up your .bash_profile in a text editor (the file is usually found in your user directory, the full path in osx is ~/.bash_profile). If you're trying to find the file in finder on osx and not seeing it in your user directory it's probably because it's hidden and you need to change your folder settings to make invisible files visible. 
 
-### Single file operations
+3. Add the following command to the bottom of .bash_profile: `source .sox_tricks`. The .bash_profile file is loaded every time you start your terminal and by adding this you add all the sox tricks from this repo to your namespace. 
 
-#### splitbysilence
+4. Reload your .bash_profile by opening up your terminal and typing `source ~/.bash_profile` or by restarting. 
 
-`splitbysilence "filename.wav"`
+# Usage
 
-This will take the specified audio file and split it based on the silences in the file. 
+If you want to see what's going on while converting / editing your sounds you can add a verbosity flag after the command name, for example like so `normalize -V ...` If not, just ignore the [-V] part of the usage descriptions below. 
 
-### Folder operations
+---
 
-The following functions all work on folders of sounds.
+# Single file operations
 
-#### normdir
+## normalize
 
-Before executing this command you need to move to the folder in question by typing `cd path/to/folder/of/sounds`
+Normalizes a sound file
 
-Then type `normdir`
+Usage: `normalize [-V] "path/to/sound.wav" "path/to/normalized.wav" "amp in dB"`
 
-`normdir` normalizes all sounds in a folder to -0.1 db. 
+## fadeinout
 
-The result is to be found in the directory `converted` in the root of the directory in question.
+Adds a small fade ins + outs to a sound file
 
-#### fadedir
+Usage: `fadeinout [-V] "path/to/sound.wav" "path/to/fadeinout.wav"`
 
-Before executing this command you need to move to the folder in question by typing `cd path/to/folder/of/sounds`
+## splitbysilence 
 
-Then type `fadedir`
+Split audio file by silence
 
-fadedir adds tiny fade ins + outs to all sounds in a folder to remove clicks. 
+Usage: `splitbysilence [-V] "path/to/sound.wav"`
 
-The result is to be found in the directory `converted` in the root of the directory in question.
+## stereo2mono
+Convert stereo audio to mono
 
-#### fadeandnormdir
-Before executing this command you need to move to the folder in question by typing `cd path/to/folder/of/sounds`
+Usage: `stereo2mono [-V] "path/to/stereo.wav" "path/to/mono.wav"`
 
-Then type `fadeandnormdir`
+## trimsilence
 
-fadeandnormdir adds tiny fade ins + outs to all sounds in a folder to remove clicks and normalizes the sounds to -0.1db. 
+Trim silence from begin and end
 
-The result is to be found in the directory `converted` in the root of the directory in question.
+Usage: `trimsilence [-V] "path/to/sound.wav" "path/to/trimmed.wav"`
+
+## to4410016
+Converts audio to 44100 hz (sample rate) and 16 bits (bit depth)
+
+Usage: `to4410016 [-V] "path/to/sound.wav" "path/to/sound4410016b.wav"`
+
+## voicecleanup
+Cleans up voice based audio
+
+Usage: `voicecleanup [-V] "path/to/voice.wav" "path/to/clean.wav"`
+
+---
+
+# Multiple file operations
+
+The multiple file operations all expect you to be in the directory that you want to work on. So before using any of them, make sure you moved to the right directory (but don't be afraid – they're all non-destructive) by typing something like `cd /path/to/folder`. 
+
+## normdir
+applies `normalize` to the current directory of sounds
+
+Usage: `normdir`
+
+## fadedir
+applies `fadeinout` in the current directory of sounds
+
+Usage: `fadedir`
+
+## splitdir
+applies `splitbysilence` in the current directory of sounds
+
+Usage: `splitdir`
+
+## stereo2monodir
+applies `stereo2mono` in the current directory of sounds
+
+Usage: `stereo2monodir`
+
+## to4410016dir
+
+applies `to4410016` in the current directory of sounds
+
+Usage: `to4410016dir`
+
+## voicecleanupdir
+applies `voicecleanupdir` in the current directory of sounds
+
+Usage: `voicecleanupdir`
