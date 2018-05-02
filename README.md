@@ -17,7 +17,7 @@ It's a prerequisite that you have sox installed.
 4. Reload your .bash_profile by opening up your terminal and typing `source ~/.bash_profile` or by restarting. 
 
 ## Contribution
-This is repo is a collective effort. If you have any nice sox tricks and would like to add them, feel free to fork and do a pull request. Only, try to adher to the design pattern for the rest of the scripts to make it easier for everyone. The more, the merrier!
+This repo is a collective effort. If you have any nice sox tricks and would like to add them, feel free to fork and do a pull request. Only, try to adher to the design pattern for the rest of the scripts to make it easier for everyone. The more, the merrier!
 
 # Usage
 
