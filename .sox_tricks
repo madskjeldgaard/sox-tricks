@@ -170,7 +170,7 @@ to4410016() {
 }
 
 # VOICECLEANUP
-# Clean ups voice audios
+# Cleans up voice audio
 # Usage: voicecleanup [-V] "path/to/voice.wav" "path/to/clean.wav"
 voicecleanup() {
     VERBOSITY="";
@@ -281,7 +281,7 @@ splitdir() {
     return 0;
 }
 
-# STEREOTOMONODIR
+# STEREO2MONODIR
 # applies `stereo2mono` in the current directory of sounds
 stereo2monodir() {
     soxS2MFunc() {
