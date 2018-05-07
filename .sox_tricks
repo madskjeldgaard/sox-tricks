@@ -202,6 +202,131 @@ voicecleanup() {
     return 0;
 }
 
+# REPEATSOUND
+# Repeats an sound N times
+# Usage: repeatsound [-V] "path/to/input.wav" "path/to/output.wav" "times [int]"
+repeatsound() {
+    VERBOSITY="";
+    verbosity $@ && VERBOSITY="-V" && shift;
+
+    if [ "$1" = "" ];
+    then
+        [ "$VERBOSITY" = "-V" ] && \
+            echo "Missing file!";
+        exit 1;
+    fi;
+    INPUT=$1;
+    OUTPUT=$2;
+    TIMES=$3;
+
+    sox "$INPUT" "$OUTPUT" \
+        repeat $TIMES \
+        $VERBOSITY;
+
+    return 0;
+}
+
+
+# GENSOUND
+# Generates a sound file
+# Usage: gensound [-V] "path/to/output.wav" "type" "length" "frequency or note"
+# Note: Valid "type" are: sine, square, triangle, sawtooth, trapezium, exp,
+# [white]noise, tpdfnoise, pinknoise, brownnoise, pluck.
+gensound() {
+    VERBOSITY="";
+    verbosity $@ && VERBOSITY="-V" && shift;
+
+    if [ "$1" = "" ];
+    then
+        [ "$VERBOSITY" = "-V" ] && \
+            echo "Missing file!";
+        exit 1;
+    fi;
+    OUTPUT=$1;
+    TYPE=$2;
+    LENGTH=$3;
+    FREQ=$4;
+
+    sox -n "$OUTPUT" \
+        synth $LENGTH \
+        $TYPE $FREQ \
+        $VERBOSITY;
+
+    return 0;
+}
+
+
+# LOWPASS
+# Lowpass filter on sound file
+# Usage: lowpass [-V] "path/to/input.wav" "path/to/output.wav" "frequency [int]"
+lowpass() {
+    VERBOSITY="";
+    verbosity $@ && VERBOSITY="-V" && shift;
+
+    if [ "$1" = "" ];
+    then
+        [ "$VERBOSITY" = "-V" ] && \
+            echo "Missing file!";
+        exit 1;
+    fi;
+    INPUT=$1;
+    OUTPUT=$2;
+    FREQ=$3;
+
+    sox "$OUTPUT" "$INPUT" \
+        lowpass -1 $FREQ \
+        $VERBOSITY;
+
+    return 0;
+}
+
+# HIGHPASS
+# Highpass filter on sound file
+# Usage: highpass [-V] "path/to/input.wav" "path/to/output.wav" "frequency [int]"
+highpass() {
+    VERBOSITY="";
+    verbosity $@ && VERBOSITY="-V" && shift;
+
+    if [ "$1" = "" ];
+    then
+        [ "$VERBOSITY" = "-V" ] && \
+            echo "Missing file!";
+        exit 1;
+    fi;
+    INPUT=$1;
+    OUTPUT=$2;
+    FREQ=$3;
+
+    sox "$OUTPUT" "$INPUT" \
+        highpass -1 $FREQ \
+        $VERBOSITY;
+
+    return 0;
+}
+
+# REVERSE
+# Reverse a sound file
+# Usage: reverse [-V] "path/to/input.wav" "path/to/output.wav"
+reverse() {
+    VERBOSITY="";
+    verbosity $@ && VERBOSITY="-V" && shift;
+
+    if [ "$1" = "" ];
+    then
+        [ "$VERBOSITY" = "-V" ] && \
+            echo "Missing file!";
+        exit 1;
+    fi;
+    INPUT=$1;
+    OUTPUT=$2;
+
+    sox "$OUTPUT" "$INPUT" \
+        reverse \
+        $VERBOSITY;
+
+    return 0;
+}
+
 
 ################################################################################
 # EOF SINGLE FILE OPERATIONS
