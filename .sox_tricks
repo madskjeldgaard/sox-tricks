@@ -41,7 +41,7 @@ soundFinder() {
 # Usage: normalize [-V] "path/to/sound.wav" "path/to/normalized.wav" "amp in dB"
 normalize() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -55,7 +55,7 @@ normalize() {
     DB=$3;
     [ "$DB" = "" ] && DB=-0.1;
 
-    sox "$INPUT" --norm="$DB" "$OUTPUT" $VERBOSITY;
+    sox $VERBOSITY "$INPUT" --norm="$DB" "$OUTPUT" ;
 
     return 0;
 }
@@ -65,7 +65,7 @@ normalize() {
 # Usage: fadeinout [-V] "path/to/sound.wav" "path/to/fadeinout.wav"
 fadeinout() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -77,9 +77,8 @@ fadeinout() {
     INPUT=$1;
     OUTPUT=$2;
 
-    sox "$INPUT" "$OUTPUT" \
-        fade t 0.01 0 0.01 \
-        $VERBOSITY;
+    sox $VERBOSITY "$INPUT" "$OUTPUT" \
+        fade t 0.01 0 0.01;
 
     return 0;
 }
@@ -89,7 +88,7 @@ fadeinout() {
 # Usage: splitbysilence [-V] "path/to/sound.wav"
 splitbysilence() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -99,9 +98,8 @@ splitbysilence() {
     fi;
     INPUT=$1;
 
-    sox "$INPUT" "$INPUT" \
-        silence 1 0.1 1% 1 0.1 1% : newfile : restart \
-        $VERBOSITY;
+    sox $VERBOSITY "$INPUT" "$INPUT" \
+        silence 1 0.1 1% 1 0.1 1% : newfile : restart;
 
     return 0;
 }
@@ -111,7 +109,7 @@ splitbysilence() {
 # Usage: stereo2mono [-V] "path/to/stereo.wav" "path/to/mono.wav"
 stereo2mono() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -122,7 +120,7 @@ stereo2mono() {
     INPUT=$1;
     OUTPUT=$2;
 
-    sox "$INPUT" "$OUTPUT" remix 1,2 $VERBOSITY;
+    sox $VERBOSITY "$INPUT" "$OUTPUT" remix 1,2 ;
 
     return 0;
 }
@@ -132,7 +130,7 @@ stereo2mono() {
 # Usage: trimsilence [-V] "path/to/sound.wav" "path/to/trimmed.wav"
 trimsilence() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -143,7 +141,7 @@ trimsilence() {
     INPUT=$1;
     OUTPUT=$2;
 
-    sox "$INPUT" "$OUTPUT" silence -l 1 0.125 1% -1 2.0 1% $VERBOSITY;
+    sox $VERBOSITY "$INPUT" "$OUTPUT" silence -l 1 0.125 1% -1 2.0 1% ;
 
     return 0;
 }
@@ -153,7 +151,7 @@ trimsilence() {
 # Usage: to4410016 [-V] "path/to/sound.wav" "path/to/sound4410016b.wav"
 to4410016() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -164,7 +162,7 @@ to4410016() {
     INPUT=$1;
     OUTPUT=$2;
 
-    sox -G "$INPUT" -b 16 "$OUTPUT" rate 44100 dither -s $VERBOSITY;
+    sox $VERBOSITY -G "$INPUT" -b 16 "$OUTPUT" rate 44100 dither -s ;
 
     return 0;
 }
@@ -174,7 +172,7 @@ to4410016() {
 # Usage: voicecleanup [-V] "path/to/voice.wav" "path/to/clean.wav"
 voicecleanup() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -185,7 +183,7 @@ voicecleanup() {
     INPUT=$1;
     OUTPUT=$2;
 
-    sox "$INPUT" "$OUTPUT" \
+    sox $VERBOSITY "$INPUT" "$OUTPUT" \
         remix - \
         highpass 100 \
         norm \
@@ -196,8 +194,7 @@ voicecleanup() {
         vad -T 0.6 -p 0.2 -t 5 \
         fade 0.1 \
         reverse \
-        norm -0.5 \
-        $VERBOSITY;
+        norm -0.5;
 
     return 0;
 }
@@ -207,7 +204,7 @@ voicecleanup() {
 # Usage: repeatsound [-V] "path/to/input.wav" "path/to/output.wav" "times [int]"
 repeatsound() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -219,9 +216,8 @@ repeatsound() {
     OUTPUT=$2;
     TIMES=$3;
 
-    sox "$INPUT" "$OUTPUT" \
-        repeat $TIMES \
-        $VERBOSITY;
+    sox $VERBOSITY "$INPUT" "$OUTPUT" \
+        repeat $TIMES;
 
     return 0;
 }
@@ -234,7 +230,7 @@ repeatsound() {
 # [white]noise, tpdfnoise, pinknoise, brownnoise, pluck.
 gensound() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -247,10 +243,9 @@ gensound() {
     LENGTH=$3;
     FREQ=$4;
 
-    sox -n "$OUTPUT" \
+    sox $VERBOSITY -n "$OUTPUT" \
         synth $LENGTH \
-        $TYPE $FREQ \
-        $VERBOSITY;
+        $TYPE $FREQ;
 
     return 0;
 }
@@ -261,7 +256,7 @@ gensound() {
 # Usage: lowpass [-V] "path/to/input.wav" "path/to/output.wav" "frequency [int]"
 lowpass() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -273,9 +268,8 @@ lowpass() {
     OUTPUT=$2;
     FREQ=$3;
 
-    sox "$OUTPUT" "$INPUT" \
-        lowpass -1 $FREQ \
-        $VERBOSITY;
+    sox $VERBOSITY "$OUTPUT" "$INPUT" \
+        lowpass -1 $FREQ;
 
     return 0;
 }
@@ -285,7 +279,7 @@ lowpass() {
 # Usage: highpass [-V] "path/to/input.wav" "path/to/output.wav" "frequency [int]"
 highpass() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -297,9 +291,8 @@ highpass() {
     OUTPUT=$2;
     FREQ=$3;
 
-    sox "$OUTPUT" "$INPUT" \
-        highpass -1 $FREQ \
-        $VERBOSITY;
+    sox $VERBOSITY "$OUTPUT" "$INPUT" \
+        highpass -1 $FREQ;
 
     return 0;
 }
@@ -309,7 +302,7 @@ highpass() {
 # Usage: reverse [-V] "path/to/input.wav" "path/to/output.wav"
 reverse() {
     VERBOSITY="";
-    verbosity $@ && VERBOSITY="-V" && shift;
+    verbosity "$@" && VERBOSITY="-V" && shift;
 
     if [ "$1" = "" ];
     then
@@ -320,9 +313,8 @@ reverse() {
     INPUT=$1;
     OUTPUT=$2;
 
-    sox "$OUTPUT" "$INPUT" \
-        reverse \
-        $VERBOSITY;
+    sox $VERBOSITY "$OUTPUT" "$INPUT" \
+        reverse;
 
     return 0;
 }
@@ -343,7 +335,7 @@ normdir() {
     soxNormFunc() {
         FILES=$(soundFinder);
         VERBOSITY="";
-        verbosity $@ && VERBOSITY="-V" && shift;
+        verbosity "$@" && VERBOSITY="-V" && shift;
 
         for file in $FILES;
         do
@@ -355,8 +347,8 @@ normdir() {
     }
 
     mkdir -p converted && \
-        soxNormFunc $@ && \
-        verbosity $@ && \
+        soxNormFunc "$@" && \
+        verbosity "$@" && \
         echo "Done normalizing sounds!";
 }
 
@@ -366,7 +358,7 @@ fadedir() {
     soxFadeFunc() {
         FILES=$(soundFinder);
         VERBOSITY="";
-        verbosity $@ && VERBOSITY="-V" && shift;
+        verbosity "$@" && VERBOSITY="-V" && shift;
 
         for file in $FILES;
         do
@@ -377,8 +369,8 @@ fadedir() {
     }
 
     mkdir -p converted && \
-        soxFadeFunc $@ && \
-        verbosity $@ && \
+        soxFadeFunc "$@" && \
+        verbosity "$@" && \
         echo "Done adding fades to sounds!";
 
     return 0;
@@ -390,7 +382,7 @@ splitdir() {
     soxSplitFunc() {
         FILES=$(soundFinder);
         VERBOSITY="";
-        verbosity $@ && VERBOSITY="-V" && shift;
+        verbosity "$@" && VERBOSITY="-V" && shift;
 
         for file in $FILES;
         do
@@ -399,8 +391,8 @@ splitdir() {
     }
 
     mkdir -p converted && \
-        soxSplitFunc $@ && \
-        verbosity $@ && \
+        soxSplitFunc "$@" && \
+        verbosity "$@" && \
         echo "Done splitting sounds!";
 
     return 0;
@@ -412,7 +404,7 @@ stereo2monodir() {
     soxS2MFunc() {
         FILES=$(soundFinder);
         VERBOSITY="";
-        verbosity $@ && VERBOSITY="-V" && shift;
+        verbosity "$@" && VERBOSITY="-V" && shift;
 
         for file in $FILES;
         do
@@ -423,8 +415,8 @@ stereo2monodir() {
     }
 
     mkdir -p converted && \
-        soxS2MFunc $@ && \
-        verbosity $@ && \
+        soxS2MFunc "$@" && \
+        verbosity "$@" && \
         echo "Done converting to mono sounds!";
 
     return 0;
@@ -436,7 +428,7 @@ to4410016dir() {
     sox4410016Func() {
         FILES=$(soundFinder);
         VERBOSITY="";
-        verbosity $@ && VERBOSITY="-V" && shift;
+        verbosity "$@" && VERBOSITY="-V" && shift;
 
         for file in $FILES;
         do
@@ -447,8 +439,8 @@ to4410016dir() {
     }
 
     mkdir -p converted && \
-        sox4410016Func $@ && \
-        verbosity $@ && \
+        sox4410016Func "$@" && \
+        verbosity "$@" && \
         echo "Done converting sounds!";
 
     return 0;
@@ -460,7 +452,7 @@ voicecleanupdir() {
     soxVoiceFunc() {
         FILES=$(soundFinder);
         VERBOSITY="";
-        verbosity $@ && VERBOSITY="-V" && shift;
+        verbosity "$@" && VERBOSITY="-V" && shift;
 
         for file in $FILES;
         do
@@ -471,8 +463,8 @@ voicecleanupdir() {
     }
 
     mkdir -p converted && \
-        soxVoiceFunc $@ && \
-        verbosity $@ && \
+        soxVoiceFunc "$@" && \
+        verbosity "$@" && \
         echo "Done cleaning sounds!";
 
     return 0;
